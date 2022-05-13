@@ -38,8 +38,14 @@ int bmpobject::load(const char* filename) {
 	fread(&this->colors, sizeof(this->colors), 1, file);
 
 	// Read Image Data
-	/*unsigned char* _data;
-	fread(&_data, this->infoheader.biSizeImage, 1, file);*/
+	fseek(file, this->header.bfOffBits, SEEK_SET);
+	unsigned char* _data;
+	_data = (unsigned char *)malloc(this->infoheader.biSizeImage);
+	if (_data == NULL) {
+		this->setError(true, (char *)"Error getting Memory");
+		return -4;
+	}
+	fread(_data, this->infoheader.biSizeImage, 1, file);
 
 	// Test for Error
 	if (ferror(file)) {
@@ -55,7 +61,7 @@ int bmpobject::load(const char* filename) {
 	this->info.height = this->infoheader.biHeight;
 	this->info.filesize = this->header.bfSize;
 	this->info.datasize = this->infoheader.biSizeImage;
-	/*this->info.data = _data;*/
+	this->info.data = _data;
 	return 0;
 }
 

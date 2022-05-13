@@ -115,12 +115,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 void draw(HDC hdc) {
 	// Get Image
 	bmpobject img = bmpobject();
-	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\x64\\Debug\\test.bmp");
+	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\res\\bully.mono.bmp");
 	// Show it Opened
 	TCHAR text[256];
 	switch (res) {
 	case 0:
-		swprintf_s(text, 256, L"Result: File Opened!\nHeight: %d - Width: %d\n", img.info.height, img.info.width);
+		swprintf_s(text, 256, L"Result: File Opened!  Data Size: %d", img.infoheader.biSizeImage);
 		break;
 	default:
 		swprintf_s(text, 256, L"Result: Error... Ret: %d", res);
@@ -133,10 +133,35 @@ void draw(HDC hdc) {
 	HGDIOBJ original = NULL;
 	original = SelectObject(hdc, GetStockObject(DC_PEN));
 	SelectObject(hdc, GetStockObject(BLACK_PEN));
-	Rectangle(hdc, 5, 30, img.info.width, img.info.height);
+	Rectangle(hdc, 5, 30, img.info.width+15, img.info.height+60);
 	SelectObject(hdc, original);
 	// Draw Image
-	
+	int x = 0;
+	int y = img.info.height;
+	int x_off = 10;
+	int y_off = 35;
+	// For Each Byte
+	for (int i = 0; i < (img.infoheader.biSizeImage); i++) {
+		unsigned char bits = img.info.data[i];
+		while (bits) {
+			if (bits & 1) {
+				SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+			}
+			else {
+				SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
+			}
+			// Verify x, y
+			if (x == img.info.width) {
+				y--;
+				x = 0;
+			}
+			else {
+				x++;
+			}
+			// Advance Bits
+			bits >>= 1;
+		}
+	}	
 }
 
 //
