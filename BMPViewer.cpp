@@ -136,38 +136,80 @@ void draw(HDC hdc) {
 	Rectangle(hdc, 5, 30, img.info.width+15, img.info.height+60);
 	SelectObject(hdc, original);
 	// Draw Image
+
+	// Attemp 3
 	int x = 0;
-	int y = img.info.height;
+	int y = 0;
 	int x_off = 10;
 	int y_off = 35;
 	int i = 0;
-	int j = 0;
+	// Cycle all data.
 	while (i < img.infoheader.biSizeImage) {
-		for (j = 0; j < 4; j++) {
+		// Grab 4 bytes
+		int bits = img.info.data[i];
+		// Cycle bits
+		while (bits) {
+			// Only Plot within Width
 			if (x <= img.info.width) {
-				int bits = img.info.data[i + j];
-				while (bits) {
-					if (x <= img.info.width) {
-						if (bits & 1) {
-							SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
-						}
-						else {
-							SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
-						}
-						x++;
-					}
-					bits >>= 1;
+				if (bits & 1) {
+					SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+				}
+				else {
+					SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
 				}
 			}
+			// Move Bits and X Forward
+			bits >>= 1;
+			x++;
 		}
+		// Check if at End of Row
 		if (x >= img.info.width) {
 			y--;
 			x = 0;
 		}
-		i += 4;
+		// Advance to next 4 bytes
+		i++;
 	}
 
+	// Attempt 2
+	//int x = 0;
+	//int y = img.info.height;
+	//int x_off = 10;
+	//int y_off = 35;
+	//int i = 0;
+	//int j = 0;
+	//while (i < img.infoheader.biSizeImage) {
+	//	for (j = 0; j < 4; j++) {
+	//		if (x <= img.info.width) {
+	//			int bits = img.info.data[i + j];
+	//			while (bits) {
+	//				if (x <= img.info.width) {
+	//					if (bits & 1) {
+	//						SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+	//					}
+	//					else {
+	//						SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
+	//					}
+	//					x++;
+	//				}
+	//				bits >>= 1;
+	//			}
+	//		}
+	//	}
+	//	if (x >= img.info.width) {
+	//		y--;
+	//		x = 0;
+	//	}
+	//	i += 4;
+	//}
+
 	// Attempt 1
+	/*int x = 0;
+	int y = img.info.height;
+	int x_off = 10;
+	int y_off = 35;
+	int i = 0;
+	int j = 0;*/
 	//for (int i = 0; i < (img.infoheader.biSizeImage); i+4) {
 	//	int bits = img.info.data[i];
 	//	while (bits) {
