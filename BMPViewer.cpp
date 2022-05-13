@@ -143,7 +143,12 @@ void draw(HDC hdc) {
 	int x_off = 10;
 	int y_off = 35;
 	int i = 0;
+	int rowsize = 32;
 	// Cycle all data.
+		// >> > a = (32 - (1 * 142 % 32) + 142) / 32
+		// a = (sizeof(int) - (bpp * width % sizeof(int)) + width) / sizeof(int) == bytes/row
+		// - or -
+		// 
 	while (i < img.infoheader.biSizeImage) {
 		// Grab 4 bytes
 		int bits = img.info.data[i];
@@ -168,7 +173,7 @@ void draw(HDC hdc) {
 			x = 0;
 		}
 		// Advance to next 4 bytes
-		i++;
+		i += 4;
 	}
 
 	// Attempt 2
