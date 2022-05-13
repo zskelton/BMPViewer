@@ -34,9 +34,12 @@ int bmpobject::load(const char* filename) {
 	// Read DIB Header
 	fread(&this->infoheader, sizeof(this->infoheader), 1, file);
 	
+	// Read Color Table
+	fread(&this->colors, sizeof(this->colors), 1, file);
+
 	// Read Image Data
-	unsigned char* _data;
-	fread(&_data, sizeof(_data), 1, file);
+	/*unsigned char* _data;
+	fread(&_data, this->infoheader.biSizeImage, 1, file);*/
 
 	// Test for Error
 	if (ferror(file)) {
@@ -52,7 +55,7 @@ int bmpobject::load(const char* filename) {
 	this->info.height = this->infoheader.biHeight;
 	this->info.filesize = this->header.bfSize;
 	this->info.datasize = this->infoheader.biSizeImage;
-	this->info.data = _data;
+	/*this->info.data = _data;*/
 	return 0;
 }
 

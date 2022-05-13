@@ -112,6 +112,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
+void draw(HDC hdc) {
+	// Get Image
+	bmpobject img = bmpobject();
+	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\x64\\Debug\\test.bmp");
+	// Show it Opened
+	TCHAR text[256];
+	switch (res) {
+	case 0:
+		swprintf_s(text, 256, L"Result: File Opened!\nHeight: %d - Width: %d\n", img.info.height, img.info.width);
+		break;
+	default:
+		swprintf_s(text, 256, L"Result: Error... Ret: %d", res);
+		TextOut(hdc, 5, 5, text, wcslen(text));
+		// return for error
+		return;
+	}
+	TextOut(hdc, 5, 5, text, wcslen(text));
+	// Draw Image Border
+	HGDIOBJ original = NULL;
+	original = SelectObject(hdc, GetStockObject(DC_PEN));
+	SelectObject(hdc, GetStockObject(BLACK_PEN));
+	Rectangle(hdc, 5, 30, img.info.width, img.info.height);
+	SelectObject(hdc, original);
+	// Draw Image
+	
+}
+
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -147,17 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-			bmpobject img = bmpobject();
-			int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\x64\\Debug\\test.bmp");
-			TCHAR text[256];
-			switch (res) {
-			case 0:
-				swprintf_s(text, 256, L"Result: Success! Ret: %d", res);
-				break;
-			default:
-				swprintf_s(text, 256, L"Result: Error... Ret: %d", res);
-			}
-			TextOut(hdc, 5, 5, text, wcslen(text));
+			draw(hdc);
             EndPaint(hWnd, &ps);
         }
         break;
@@ -189,3 +206,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+

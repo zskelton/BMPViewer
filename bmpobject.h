@@ -2,12 +2,13 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <stdio.h>
-#include <string>
+#include <stdlib.h>
 
 class bmpobject
 {
 public:
 	// Structures (char = 1, short = 2, int = 4, float = 4, double = 8 bytes)
+#pragma pack(push,1)
 	struct bmpheader
 	{
 		unsigned short bfType;
@@ -16,7 +17,10 @@ public:
 		unsigned short bfReserved2;
 		unsigned int bfOffBits;
 	};
+#pragma pack(pop)
 
+
+#pragma pack(push,1)
 	struct bmpinfoheader
 	{
 		unsigned int biSize;
@@ -31,7 +35,18 @@ public:
 		unsigned int biClrUsed;
 		unsigned int biClrImportant;
 	};
-	
+#pragma pack(pop)
+
+#pragma pack(push,1)
+	struct colortable {
+		unsigned char red;
+		unsigned char green;
+		unsigned char blue;
+		unsigned char reserved;
+	};
+#pragma pack(pop)
+
+#pragma pack(push,1)
 	struct imageinfo {
 		int width;
 		int height;
@@ -39,10 +54,13 @@ public:
 		unsigned int datasize;
 		unsigned char* data;
 	};
+#pragma pack(pop)
+
 
 	// Variables
 	bmpheader header;
 	bmpinfoheader infoheader;
+	colortable colors;
 	imageinfo info;
 	bool error;
 	char* errorMsg;
