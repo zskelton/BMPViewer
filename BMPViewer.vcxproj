@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bmpobject.h" />
     <ClInclude Include="BMPViewer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bmpobject.cpp" />
     <ClCompile Include="BMPViewer.cpp" />
   </ItemGroup>
   <ItemGroup>

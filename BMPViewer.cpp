@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "BMPViewer.h"
+#include "bmpobject.h"
 
 #define MAX_LOADSTRING 100
 
