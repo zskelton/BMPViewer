@@ -115,7 +115,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 void draw(HDC hdc) {
 	// Get Image
 	bmpobject img = bmpobject();
-	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\res\\bully.mono.bmp");
+	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\res\\cross.bmp");
 	// Show it Opened
 	TCHAR text[256];
 	switch (res) {
@@ -140,28 +140,55 @@ void draw(HDC hdc) {
 	int y = img.info.height;
 	int x_off = 10;
 	int y_off = 35;
-	// For Each Byte
-	for (int i = 0; i < (img.infoheader.biSizeImage); i++) {
-		unsigned char bits = img.info.data[i];
-		while (bits) {
-			if (bits & 1) {
-				SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+	int i = 0;
+	int j = 0;
+	while (i < img.infoheader.biSizeImage) {
+		for (j = 0; j < 4; j++) {
+			if (x <= img.info.width) {
+				int bits = img.info.data[i + j];
+				while (bits) {
+					if (x <= img.info.width) {
+						if (bits & 1) {
+							SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+						}
+						else {
+							SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
+						}
+						x++;
+					}
+					bits >>= 1;
+				}
 			}
-			else {
-				SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
-			}
-			// Verify x, y
-			if (x == img.info.width) {
-				y--;
-				x = 0;
-			}
-			else {
-				x++;
-			}
-			// Advance Bits
-			bits >>= 1;
 		}
-	}	
+		if (x >= img.info.width) {
+			y--;
+			x = 0;
+		}
+		i += 4;
+	}
+
+	// Attempt 1
+	//for (int i = 0; i < (img.infoheader.biSizeImage); i+4) {
+	//	int bits = img.info.data[i];
+	//	while (bits) {
+	//		if (bits & 1) {
+	//			SetPixel(hdc, x + x_off, y + y_off, RGB(255, 255, 255)); // White
+	//		}
+	//		else {
+	//			SetPixel(hdc, x + x_off, y + y_off, RGB(0, 0, 0)); // Black
+	//		}
+	//		// Verify x, y
+	//		if (x == img.info.width) {
+	//			y--;
+	//			x = 0;
+	//		}
+	//		else {
+	//			x++;
+	//		}
+	//		// Advance Bits
+	//		bits >>= 1;
+	//	}
+	//}	
 }
 
 //
