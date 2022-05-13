@@ -11,11 +11,10 @@ bmpobject::~bmpobject() {
 }
 
 // Public Functions
-int bmpobject::load(char* filename) {
+int bmpobject::load(const char* filename) {
 	// Set File Pointer
 	FILE* file = NULL;
-	// fopen_s(&file, filename, "rb");
-	fopen_s(&file, (char*)"test.bmp", "rb");
+	fopen_s(&file, filename, "rb");
 	
 	// Check if file exists
 	if (file == NULL) {
@@ -34,12 +33,6 @@ int bmpobject::load(char* filename) {
 	
 	// Read DIB Header
 	fread(&this->infoheader, sizeof(this->infoheader), 1, file);
-	
-	// Check if file is a 24-bit BMP file
-	/*if (dibheader.biBitCount != 24) {
-		printf("Error: File %s is not a 24-bit BMP file.\n", filename);
-		return;
-	}*/
 	
 	// Read Image Data
 	unsigned char* _data;
@@ -60,9 +53,10 @@ int bmpobject::load(char* filename) {
 	this->info.filesize = this->header.bfSize;
 	this->info.datasize = this->infoheader.biSizeImage;
 	this->info.data = _data;
+	return 0;
 }
 
-void bmpobject::save(char* filename) {
+void bmpobject::save(const char* filename) {
 	// Not used.
 	return;
 }

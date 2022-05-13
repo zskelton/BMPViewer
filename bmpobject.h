@@ -1,6 +1,8 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 #include <stdio.h>
-#include <string.h>
+#include <string>
 
 class bmpobject
 {
@@ -52,8 +54,8 @@ public:
 	~bmpobject();
 	
 	// Public Functions
-	int load(char* filename);
-	void save(char* filename);
+	int load(const char* filename);
+	void save(const char* filename);
 	bool isError();
 	void setError(bool flag, char* msg);
 };

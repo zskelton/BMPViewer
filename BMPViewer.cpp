@@ -147,9 +147,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            TCHAR greeting[] = _T("Hello, Windows Desktop!");
-            // TODO: Add any drawing code that uses hdc here...
-            TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
+			bmpobject img = bmpobject();
+			int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\x64\\Debug\\test.bmp");
+			TCHAR text[256];
+			switch (res) {
+			case 0:
+				swprintf_s(text, 256, L"Result: Success! Ret: %d", res);
+				break;
+			default:
+				swprintf_s(text, 256, L"Result: Error... Ret: %d", res);
+			}
+			TextOut(hdc, 5, 5, text, wcslen(text));
             EndPaint(hWnd, &ps);
         }
         break;
