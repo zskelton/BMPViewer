@@ -2,6 +2,12 @@
 
 // Constructor
 bmpobject::bmpobject() {
+	header = { };
+	infoheader = { };
+	colors = { };
+	info = { };
+	error = false;
+	errorMsg = NULL;
 	return;
 }
 

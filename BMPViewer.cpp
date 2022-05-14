@@ -115,7 +115,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 void draw(HDC hdc) {
 	// Get Image
 	bmpobject img = bmpobject();
-	int res = img.load("C:\\Users\\zds\\Desktop\\imagereader\\BMPViewer\\res\\cross.bmp");
+	int res = img.load("H:\\Programming\\VSRepo\\BMPViewer\\BMPViewer\\res\\cross.bmp");
 	// Show it Opened
 	TCHAR text[256];
 	switch (res) {
@@ -124,11 +124,11 @@ void draw(HDC hdc) {
 		break;
 	default:
 		swprintf_s(text, 256, L"Result: Error... Ret: %d", res);
-		TextOut(hdc, 5, 5, text, wcslen(text));
+		TextOut(hdc, 5, 5, text, (int)wcslen(text));
 		// return for error
 		return;
 	}
-	TextOut(hdc, 5, 5, text, wcslen(text));
+	TextOut(hdc, 5, 5, text, (int)wcslen(text));
 	// Draw Image Border
 	HGDIOBJ original = NULL;
 	original = SelectObject(hdc, GetStockObject(DC_PEN));
@@ -142,7 +142,7 @@ void draw(HDC hdc) {
 	int y = 0;
 	int x_off = 10;
 	int y_off = 35;
-	int i = 0;
+	unsigned int i = 0;
 	int rowsize = 32;
 	// Cycle all data.
 		// >> > a = (32 - (1 * 142 % 32) + 142) / 32
